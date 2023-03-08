@@ -44,8 +44,12 @@ export class TasksService {
   }
 
   deleteTask(id:string):string{
-    this.tasks=this.tasks.filter(task=>task.id!==id);
-    return "Task Deleted Successfully!"
+    const task=this.getTaskById(id);
+    if(task){
+      this.tasks=this.tasks.filter(task=>task.id!==id);
+      return "Task Deleted Successfully!"
+    }
+    throw new NotFoundException(`${id} is Invalid ID.`)
   }
 
   updateTaskStatus(id:string,status:TaskStatus):Task{
