@@ -13,7 +13,7 @@ export class Task {
     title: string;
   
     @Column()
-    descrption: string;
+    description: string;
   
     @Column()
     status: TaskStatus;
