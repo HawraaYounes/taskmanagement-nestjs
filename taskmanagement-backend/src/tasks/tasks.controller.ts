@@ -7,6 +7,7 @@ import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
 import { Task } from './task.entity';
 import { ParseIntPipe } from '@nestjs/common/pipes';
 
+
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
@@ -31,10 +32,10 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  // @Delete('/:id')
-  // deleteTask(@Param('id') id:string):string{
-  //   return this.tasksService.deleteTask(id);
-  // }
+  @Delete('/:id')
+  deleteTask(@Param('id',ParseIntPipe) id:number):Promise<{message:string}>{
+    return this.tasksService.deleteTask(id);
+  }
 
   // @Patch('/:id/status')
   // updateTaskStatus(@Param('id') id:string,@Body('status',TaskStatusValidationPipe) status:TaskStatus):Task{
