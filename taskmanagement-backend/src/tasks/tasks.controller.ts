@@ -4,6 +4,8 @@ import { Body, Query, UsePipes } from '@nestjs/common/decorators';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/create-tasks-filter.dto';
 import { TaskStatusValidationPipe } from './pipes/task-status-validation.pipe';
+import { Task } from './task.entity';
+import { ParseIntPipe } from '@nestjs/common/pipes';
 
 @Controller('tasks')
 export class TasksController {
@@ -17,10 +19,10 @@ export class TasksController {
   //   return this.tasksService.getAllTasks();
   // }
 
-  // @Get('/:id')
-  // getTaskById(@Param('id') id:string):Task{
-  //   return this.tasksService.getTaskById(id);
-  // }
+  @Get('/:id')
+  getTaskById(@Param('id',ParseIntPipe) id:number):Promise<Task>{
+    return this.tasksService.getTaskById(id);
+  }
 
   // @Post()
   // @UsePipes(ValidationPipe)
