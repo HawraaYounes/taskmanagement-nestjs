@@ -19,9 +19,9 @@ export class UserService {
         return await this.userRepository.save(user);
       }
 
-      async getUserByUsername(username:string) :Promise<User | undefined> {
+      async getUserByUsername(username:string) {
         const user=await this.userRepository.findOneBy({ username });
-         return user;
+            return user;
      }
 
 }

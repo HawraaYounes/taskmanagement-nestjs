@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException, ValidationPipe } from '@nestjs/common';
 import { AuthCredentialsDto } from './auth-credentials.dto';
 import { User } from '../user/user.entity';
 import * as bcrypt from 'bcrypt';
@@ -22,14 +22,15 @@ export class AuthService {
          
       }
 
-      async validateUser(authCredentials:AuthCredentialsDto): Promise<any> {
+      async validateUser(authCredentials:AuthCredentialsDto):Promise<any> {
         const {username,password}=authCredentials;
-        const user = await this.userService.getUserByUsername(username)
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (user && isMatch) {
-           const {password,salt ,...result}= user;
-          return result;
+        const user = await this.userService.getUserByUsername(username);
+        if(user){
+            const isMatch = await bcrypt.compare(password, user.password);
+            if (isMatch) {
+            const {password,salt ,...result}= user;
+            return result;
+            }
         }
-        return null;
       }
 }
