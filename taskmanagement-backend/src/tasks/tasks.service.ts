@@ -4,9 +4,8 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/create-tasks-filter.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
-import { DeleteResult, Like, Repository, UpdateResult } from 'typeorm';
+import { DeleteResult, Like, Repository } from 'typeorm';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { title } from 'process';
 @Injectable()
 export class TasksService {
   constructor(
