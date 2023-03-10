@@ -1,16 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuthCredentialsDto } from './auth-credentials.dto';
 import { User } from '../user/user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
-      ) {}
+
+        @Inject(UserService)
+        private readonly userService: UserService;
 
      async signUp(authcredentials:AuthCredentialsDto){
             const {username,password}=authcredentials;
@@ -20,7 +18,16 @@ export class AuthService {
             user.username=username;
             user.password=hashedPassword;
             user.salt=salt;
-            return await this.userRepository.save(user);
+            return await this.userService.addUser(user);
          
+      }
+
+      async validateUser(username: string, pass: string): Promise<any> {
+        const user = await this.userService.getUserByUsername(username)
+        if (user && user.password === pass) {
+          const { password, ...result } = user;
+          return result;
+        }
+        return null;
       }
 }

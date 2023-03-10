@@ -8,7 +8,7 @@ export class UserController {
     constructor(private tasksService: UserService ){}
 
     @Get('/:id')
-  getTaskById(@Param('username') username:string):Promise<User>{
-    return this.tasksService.getUserByUsername(username);
-  }
+    getTaskById(@Param('username') username:string):Promise<User>{
+        return this.tasksService.getUserByUsername(username);
+    }
 }
