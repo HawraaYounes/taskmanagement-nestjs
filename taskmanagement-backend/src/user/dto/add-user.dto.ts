@@ -5,4 +5,7 @@ export class AddUserDto{
 
     @IsNotEmpty()
     password:string;
+
+    @IsNotEmpty()
+    salt:string;
 }

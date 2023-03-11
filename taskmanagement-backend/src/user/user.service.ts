@@ -12,10 +12,11 @@ export class UserService {
         private userRepository: Repository<User>,
       ) {}
       async addUser(addUserDto:AddUserDto): Promise<User> {
-        const {username,password}=addUserDto;
+        const {username,password,salt}=addUserDto;
         const user=new User();
         user.username=username;
         user.password=password;
+        user.salt=salt;
         return await this.userRepository.save(user);
       }
 
