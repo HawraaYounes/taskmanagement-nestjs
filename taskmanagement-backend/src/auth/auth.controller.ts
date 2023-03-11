@@ -3,6 +3,7 @@ import { AuthCredentialsDto } from './auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { User } from '../user/user.entity';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { GetUser } from './get-user.decorator';
 
 
 @Controller('auth')
@@ -28,7 +29,7 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Get('/test')
-    test(@Request() req) {
-      console.log(req)
+    test(@GetUser() user:User) {
+      console.log(user)
     }
 }
