@@ -27,9 +27,4 @@ export class AuthController {
         throw new UnauthorizedException('Invalid username and password.');
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get('/test')
-    test(@GetUser() user:User) {
-      console.log(user)
-    }
 }
