@@ -33,12 +33,17 @@ export class AuthService {
             const isMatch = await bcrypt.compare(password, user.password);
             if (isMatch) {
             const {password,salt ,...result}= user;
-            const payload = { username: user.username , sub:user.id};
-            const access_token=await this.jwtService.sign(payload);
-            return {access_token};
+            return await this.login(result);
             }
             return null;
         }
         return null;
       }
+
+      async login(user:any):Promise<{access_token:string}> {
+        const payload = { username: user.username , sub:user.id};
+        const access_token=await this.jwtService.sign(payload);
+        return {access_token};
+      }
+
 }
