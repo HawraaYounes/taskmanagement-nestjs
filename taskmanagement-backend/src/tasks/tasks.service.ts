@@ -14,28 +14,36 @@ export class TasksService {
     private tasksRepository: Repository<Task>,
   ) {}
 
-  async getAllTasks():Promise<Task[]> {
-    return await this.tasksRepository.find();
-  }
-
-  async getFilteredTasks(getFilteredTasks:GetTaskFilterDto):Promise<Task[]>{
+  async getTasks(getFilteredTasks:GetTaskFilterDto,user:User):Promise<Task[]>{
     const {search, status}=getFilteredTasks;
-    let tasks=await this.getAllTasks();
+    let tasks=await this.tasksRepository.find({
+      where:{
+        userId: user.id
+      } });
     if(status){
-      tasks = await this.tasksRepository.findBy({
-        status: status,
+      tasks = await this.tasksRepository.find({
+        where:{
+          status: status,
+          userId: user.id
+        }
     })
     }
     if(search){
-      tasks = await this.tasksRepository.findBy({title: Like(`%${search}%`)})
+      tasks = await this.tasksRepository.find({
+        where:
+        {title: Like(`%${search}%`),
+        userId:user.id}
+      })
     }
     if(search && status){
       tasks=await this.tasksRepository.find({
         where:[ {
+            userId: user.id,
             status:status,
             title: Like(`%${search}%`)
         },
       {
+        userId: user.id,
         status:status,
         description: search,
       }],
@@ -56,7 +64,9 @@ export class TasksService {
     task.description=description;
     task.status=TaskStatus.OPEN;
     task.user=user;
-    return await this.tasksRepository.save(task);
+    await this.tasksRepository.save(task);
+    delete task.user;
+    return task;
   }
 
   async deleteTask(id:number):Promise<DeleteResult> {
