@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Task } from 'src/tasks/task.entity';
+import { Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany } from 'typeorm';
 @Unique(['username'])
 @Entity()
 export class User {
@@ -13,4 +14,7 @@ export class User {
   
    @Column()
    salt:string;
+
+   @OneToMany(() => Task, (task) => task.user)
+   tasks: Task[]
 }
