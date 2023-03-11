@@ -16,11 +16,12 @@ export class AuthController {
     }
 
     @Post('/signIn')
-    async signIn(@Body(ValidationPipe) authCredentials:AuthCredentialsDto):Promise<any>{
-      const user= await this.authService.validateUser(authCredentials);
-       if(user){
-        return user;
-       }
-       throw new UnauthorizedException("Invalid Username and Password.");
+    async signIn(@Body(ValidationPipe) authCredentials:AuthCredentialsDto):Promise<{access_token:string}>{
+    
+      const token= await this.authService.validateUser(authCredentials);
+        if(token){
+          return token;
+        }
+        throw new UnauthorizedException('Invalid username and password.');
     }
 }
