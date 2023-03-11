@@ -1,7 +1,8 @@
-import { Body, Controller, Post, UnauthorizedException, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UnauthorizedException, UseGuards, ValidationPipe, Request } from '@nestjs/common';
 import { AuthCredentialsDto } from './auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { User } from '../user/user.entity';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 
 @Controller('auth')
@@ -23,5 +24,11 @@ export class AuthController {
           return token;
         }
         throw new UnauthorizedException('Invalid username and password.');
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/test')
+    test(@Request() req) {
+      console.log(req)
     }
 }
