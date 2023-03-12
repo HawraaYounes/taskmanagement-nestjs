@@ -32,7 +32,7 @@ export class TasksController {
     if(task){
       return task;
     }
-    throw new NotFoundException(`Task with id ${id} not found.`)
+    throw new NotFoundException(`Task with id ${id} not found.`);
   }
 
   @Post()
@@ -51,7 +51,11 @@ export class TasksController {
 
   @Patch('/:id/status')
   @UsePipes(ValidationPipe)
-  updateTaskStatus(@Param('id',ParseIntPipe) id:number,@Body()data:UpdateTaskDto){
-    return this.tasksService.updateTaskStatus(id,data);
+  async updateTaskStatus(@Param('id',ParseIntPipe ) id:number,@Body()data:UpdateTaskDto , @GetUser() user:User){
+    const task= await this.tasksService.updateTaskStatus(id,data,user);
+    if(task){
+      return task;
+    }
+    throw new NotFoundException(`Task with id ${id} not found.`);
   }
 }

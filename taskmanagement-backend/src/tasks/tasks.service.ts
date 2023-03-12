@@ -73,8 +73,14 @@ export class TasksService {
       return await this.tasksRepository.delete(id);
   }
 
-  async updateTaskStatus(id: number, data:UpdateTaskDto):Promise<Task> {
-    await this.tasksRepository.update({ id }, data);
-    return await this.tasksRepository.findOneBy({id});
+  async updateTaskStatus(id: number, data:UpdateTaskDto, user:User):Promise<Task> {
+    const task=await this.getTaskById(id,user);
+    if(task){
+      const {status}=data;
+      task.status=status;
+      await this.tasksRepository.save(task);
+      return task;
+    }
+   
   }
 }
