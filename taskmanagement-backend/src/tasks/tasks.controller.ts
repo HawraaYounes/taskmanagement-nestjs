@@ -45,8 +45,12 @@ export class TasksController {
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id',ParseIntPipe) id:number):Promise<DeleteResult>{
-    return this.tasksService.deleteTask(id);
+  async deleteTask(@Param('id',ParseIntPipe) id:number, @GetUser() user:User):Promise<DeleteResult>{
+    const task=await this.tasksService.deleteTask(id,user);
+    if(task){
+      return task;
+    }
+    throw new NotFoundException(`Task with id ${id} not found.`);
   }
 
   @Patch('/:id/status')
