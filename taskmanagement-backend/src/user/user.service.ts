@@ -11,6 +11,8 @@ export class UserService {
         @InjectRepository(User)
         private userRepository: Repository<User>,
       ) {}
+
+      
       async addUser(addUserDto:AddUserDto): Promise<User> {
         const {username,password,salt}=addUserDto;
         const user=new User();
