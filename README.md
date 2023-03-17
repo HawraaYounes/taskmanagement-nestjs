@@ -9,4 +9,4 @@ The objective of this project is to learn NestJs.
 5. Using TypeORM for database interaction.
 6. Implementing data validation and using Pipes.
 7. Authentication and Authorization using JWT strategy.
-
+8. Using custom data Serialization with Interceptors.
