@@ -1,15 +1,16 @@
-import { ClassSerializerInterceptor, Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-
+import { SerializeInterceptor } from '../interceptors/serialize.interceptor';
 @Controller('user')
 export class UserController {
 
-    constructor(private tasksService: UserService ){}
+    constructor(private usersService: UserService ){}
 
-    @UseInterceptors(ClassSerializerInterceptor)
-    @Get('/:id')
-    getTaskById(@Param('username') username:string):Promise<User>{
-        return this.tasksService.getUserByUsername(username);
+    @UseInterceptors(SerializeInterceptor)
+    @Get('/:username')
+    async getUserByUsername(@Param('username') username:string):Promise<User>{
+        console.log("hfhfhfh")
+        return await this.usersService.getUserByUsername(username);
     }
 }

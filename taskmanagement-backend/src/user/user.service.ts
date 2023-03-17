@@ -22,7 +22,8 @@ export class UserService {
 
       async getUserByUsername(username:string) {
         const user=await this.userRepository.findOneBy({ username });
-            return user;
+        console.log('ssss')
+        return user;
      }
 
 }
