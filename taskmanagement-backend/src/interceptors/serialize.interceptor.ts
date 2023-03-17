@@ -1,6 +1,8 @@
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { UserDto } from 'src/user/dto/user.dto';
 
 @Injectable()
 export class SerializeInterceptor implements NestInterceptor {
@@ -11,8 +13,10 @@ export class SerializeInterceptor implements NestInterceptor {
       .handle()
       .pipe(
         map((data:any)=>{
-            console.log('after',data); //run after the route is handled and before response is sent out
-        })
+           return plainToClass(UserDto,data,{
+            excludeExtraneousValues:true,
+           });
+        }),
       );
   }
 }
